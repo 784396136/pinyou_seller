@@ -11,4 +11,10 @@ class LoginController extends Controller
     {
         return view("shoplogin");
     }
+
+    // 注册
+    public function register()
+    {
+        return view("register");
+    }
 }

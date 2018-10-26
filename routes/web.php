@@ -2,6 +2,9 @@
 
 // 登录
 Route::get('/login',"LoginController@login")->name('login');
+// 注册
+Route::get('/register',"LoginController@register")->name('register');
+
 
 // 主页
 Route::get('/',"IndexController@index")->name('index');
