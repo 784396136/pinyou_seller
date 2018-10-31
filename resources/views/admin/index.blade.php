@@ -265,7 +265,7 @@
                         <li class="dropdown user user-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <img src="/img/user2-160x160.jpg" class="user-image" alt="User Image">
-                                <span class="hidden-xs">chendahai</span>
+                                <span class="hidden-xs">{{session('seller_name')}}</span>
                             </a>
                             <ul class="dropdown-menu">
                                 <!-- User image -->
@@ -273,7 +273,7 @@
                                     <img src="/img/user2-160x160.jpg" class="img-circle" alt="User Image">
 
                                     <p>
-                                        chendahai
+                                            {{session('seller_name')}}
                                         <small>最后登录 11:20AM</small>
                                     </p>
                                 </li>

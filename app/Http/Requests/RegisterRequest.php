@@ -91,6 +91,10 @@ class RegisterRequest extends FormRequest
                 'required',
                 'regex:/^([1-9]{1})(\d{14}|\d{18})$/',
             ],
+            'introduce'=>[
+                'required',
+                'max:300',
+            ],
             'm1'=>'accepted'
         ];
     }

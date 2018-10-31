@@ -6,6 +6,7 @@ Route::get("/get","TestController@get")->name('get');
 
 // 登录
 Route::get('/login',"LoginController@login")->name('login');
+Route::post('/login',"LoginController@dologin")->name('dologin');
 // 注册
 Route::get('/register',"RegisterController@register")->name('register');
 Route::post('/register',"RegisterController@doregister")->name('doregister');

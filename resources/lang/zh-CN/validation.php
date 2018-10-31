@@ -186,6 +186,7 @@ return [
         'name_bank'             => '开户行名称',
         'bank_branch'           => '开户行支行',
         'ank_account'           => '银行账号',
-        'm1'                    => '入驻协议'
+        'm1'                    => '入驻协议',
+        'introduce'             => '店铺描述'
     ],
 ];

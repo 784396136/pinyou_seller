@@ -41,19 +41,20 @@
 								<img src="img/wx_cz.jpg" />
 							</div>
 							<div id="profile" class="tab-pane  active">
-								<form class="sui-form">
+								<form class="sui-form" action="{{Route('dologin')}}" method="POST">
+									@csrf
 									<div class="input-prepend"><span class="add-on loginname"></span>
-										<input id="prependedInput" type="text" placeholder="邮箱/用户名/手机号" class="span2 input-xfat">
+										<input name="username" type="text" value="{{old('username')}}" placeholder="邮箱/用户名/手机号" class="span2 input-xfat">
 									</div>
 									<div class="input-prepend"><span class="add-on loginpwd"></span>
-										<input id="prependedInput" type="password" placeholder="请输入密码" class="span2 input-xfat">
+										<input name="password" type="password" value="{{old('password')}}" placeholder="请输入密码" class="span2 input-xfat">
 									</div>
 									<div class="setting">
 										<label class="checkbox inline"><input name="m1" type="checkbox" value="2" checked="">自动登录</label>
 										<span class="forget">忘记密码？</span>
 									</div>
 									<div class="logined">
-										<a class="sui-btn btn-block btn-xlarge btn-danger" href="admin/index.html" target="_blank">登&nbsp;&nbsp;录</a>
+										<button class="sui-btn btn-block btn-xlarge btn-danger" type="submit">登&nbsp;&nbsp;录</button>
 									</div>
 								</form>
 								<div class="otherlogin">
@@ -100,3 +101,14 @@
 </body>
 
 </html>
+<script src="assets/layer/layer.js" type="text/javascript"></script>
+<script>
+	if("{{session('error')}}")
+	{
+		layer.alert( "{{session('error')}}", {
+					title: '提示框',
+					icon: 0,
+				});
+	}
+	
+</script>

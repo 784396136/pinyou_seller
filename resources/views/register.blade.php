@@ -47,6 +47,14 @@
 							<input type="text" value="{{ old('shop_name') }}" name="shop_name" placeholder="店铺名称" class="input-xfat input-xlarge">
 						</div>
 					</div>
+					<div class="control-group">
+						<label class="control-label">店铺介绍：</label>
+						<div class="controls">
+							<textarea name="introduce" cols="45" rows="10" maxlength="300">
+								{{ old('introduce') }}
+							</textarea>
+						</div>
+					</div>
 
 					<div class="control-group">
 						<label class="control-label">公司名称：</label>
