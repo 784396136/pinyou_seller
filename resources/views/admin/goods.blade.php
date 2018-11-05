@@ -14,7 +14,11 @@
 	<link rel="stylesheet" href="/css/style.css">
 	<script src="/plugins/jQuery/jquery-2.2.3.min.js"></script>
 	<script src="/plugins/bootstrap/js/bootstrap.min.js"></script>
-
+	<style>
+		td{
+			vertical-align: middle !important;
+		}
+	</style>
 </head>
 
 <body class="hold-transition skin-red sidebar-mini">
@@ -67,43 +71,51 @@
 						</th>
 						<th class="sorting_asc">商品ID</th>
 						<th class="sorting">商品名称</th>
-						<th class="sorting">商品价格</th>
+						<th class="sorting">商品图片</th>
 						<th class="sorting">一级分类</th>
 						<th class="sorting">二级分类</th>
 						<th class="sorting">三级分类</th>
-						<th class="sorting">状态</th>
+						{{-- <th class="sorting">状态</th> --}}
 						<th class="text-center">操作</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
-						<td><input type="checkbox"></td>
-						<td>1</td>
-						<td>小米6S手机</td>
-						<td>1090</td>
-						<td>数码</td>
-						<td>手机</td>
-						<td>国产手机</td>
-						<td>
-							<span>
-								未申请
-							</span>
-							<span>
-								申请中
-							</span>
-							<span>
-								审核通过
-							</span>
-							<span>
-								已驳回
-							</span>
-						</td>
-						<td class="text-center">
-							<button type="button" class="btn bg-olive btn-xs">修改</button>
-						</td>
-					</tr>
+					@foreach ($data as $v)
+						<tr>
+							<td><input type="checkbox"></td>
+							<td>{{$v->id}}</td>
+							<td>{{$v->goods_name}}</td>
+							<td>
+								<img width="120" height="auto" src="{{$v->logo}}" alt="">
+							</td>
+							<td>{{$v->cat1->cat_name}}</td>
+							<td>{{$v->cat2->cat_name}}</td>
+							<td>{{$v->cat3->cat_name}}</td>
+							{{-- <td>
+								<span>
+									未申请
+								</span>
+								<span>
+									申请中
+								</span>
+								<span>
+									审核通过
+								</span>
+								<span>
+									已驳回
+								</span>
+							</td> --}}
+							<td class="text-center">
+								<button class="btn bg-olive btn-xs">
+									<a style="color:#fff;display: inline-block;width: 100%; height: 100%;" href="{{Route('goodsSku',['id'=>$v->id])}}">添加SKU</a>
+								</button>
+								<button type="button" class="btn bg-olive btn-xs">修改</button>
+							</td>
+						</tr>
+					@endforeach
+					
 				</tbody>
-			</table>
+			</table>	
 			<!--数据列表/-->
 
 

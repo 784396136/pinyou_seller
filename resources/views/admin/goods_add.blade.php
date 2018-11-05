@@ -23,7 +23,21 @@
 
 
 
-
+	<style>
+		.v_logo{
+			width: 350px;
+			display: inline-block;
+		}
+		input[type=file]{
+			display: inline;
+		}
+		.img_preview{
+			text-align: center;
+		}
+		td{
+			vertical-align:middle !important;
+		}
+	</style>
 
 </head>
 
@@ -53,10 +67,10 @@
 					</li>
 				</ul>
 				<!--tab头/-->
-
+				<form action="http://localhost:4545/seller/doadd" method="post" enctype="multipart/form-data">
+					@csrf
 				<!--tab内容-->
-				<div class="tab-content">
-
+				<div class="tab-content"> 
 					<!--表单内容-->
 					<div class="tab-pane active" id="home">
 						<div class="row data-type">
@@ -66,17 +80,22 @@
 								<table>
 									<tr>
 										<td>
-											<select class="form-control">
+											<select name="cat1" class="form-control cat_1">
+												<option value="">请选择分类</option>
+												@foreach ($category as $v)
+													<option value="{{$v['id']}}">{{$v['cat_name']}}</option>
+												@endforeach
 											</select>
 										</td>
 										<td>
-											<select class="form-control select-sm"></select>
+											<select name="cat2" class="form-control select-sm cat_2">
+													<option value="">请选择上级分类</option>
+											</select>
 										</td>
 										<td>
-											<select class="form-control select-sm"></select>
-										</td>
-										<td>
-											模板ID:19
+											<select name="cat3" class="form-control select-sm cat_3">
+													<option value="">请选择上级分类</option>
+											</select>
 										</td>
 									</tr>
 								</table>
@@ -86,44 +105,44 @@
 
 							<div class="col-md-2 title">商品名称</div>
 							<div class="col-md-10 data">
-								<input type="text" class="form-control" placeholder="商品名称" value="">
+								<input type="text" name="goods_name" class="form-control" placeholder="商品名称" value="">
+							</div>
+
+							<div class="col-md-2 title">商品封面</div>
+							<div class="col-md-10 data">
+								<div class="v_logo">
+
+								</div>
+								<input type="file" class="logo" name="logo" class="form-control">
 							</div>
 
 							<div class="col-md-2 title">品牌</div>
 							<div class="col-md-10 data">
-								<select class="form-control"></select>
+								<table>
+									<tr>
+										<td>
+											<select name="brand_id" class="form-control">
+												<option value="">请选择品牌</option>
+												@foreach ($brand as $v)
+													<option value="{{$v->id}}">{{$v->brand_name}}</option>
+												@endforeach
+											</select>
+										</td>
+									</tr>
+									
+								</table>
+								
 							</div>
 
 							<div class="col-md-2 title">副标题</div>
 							<div class="col-md-10 data">
-								<input type="text" class="form-control" placeholder="副标题" value="">
-							</div>
-
-							<div class="col-md-2 title">价格</div>
-							<div class="col-md-10 data">
-								<div class="input-group">
-									<span class="input-group-addon">¥</span>
-									<input type="text" class="form-control" placeholder="价格" value="">
-								</div>
+								<input name="subtitle" type="text" class="form-control" placeholder="副标题" value="">
 							</div>
 
 							<div class="col-md-2 title editer">商品介绍</div>
 							<div class="col-md-10 data editer">
 								<textarea name="content" style="width:800px;height:400px;visibility:hidden;"></textarea>
 							</div>
-
-							<div class="col-md-2 title rowHeight2x">包装列表</div>
-							<div class="col-md-10 data rowHeight2x">
-
-								<textarea rows="4" class="form-control" placeholder="包装列表"></textarea>
-							</div>
-
-							<div class="col-md-2 title rowHeight2x">售后服务</div>
-							<div class="col-md-10 data rowHeight2x">
-								<textarea rows="4" class="form-control" placeholder="售后服务"></textarea>
-							</div>
-
-
 						</div>
 					</div>
 
@@ -132,28 +151,26 @@
 						<div class="row data-type">
 							<!-- 颜色图片 -->
 							<div class="btn-group">
-								<button type="button" class="btn btn-default" title="新建" data-target="#uploadModal" data-toggle="modal"><i
-									 class="fa fa-file-o"></i> 新建</button>
-
+								<button type="button" id="add_img" class="btn btn-default" title="新建" >
+									<i class="fa fa-file-o"></i> 新建
+								</button>
 							</div>
 
 							<table class="table table-bordered table-striped table-hover dataTable">
 								<thead>
 									<tr>
-
-										<th class="sorting">颜色</th>
 										<th class="sorting">图片</th>
 										<th class="sorting">操作</th>
 								</thead>
-								<tbody>
+								<tbody class="imgs">
 									<tr>
-										<td>
-
-										</td>
-										<td>
+										<td class="img_preview">
 											<img alt="" src="" width="100px" height="100px">
 										</td>
-										<td> <button type="button" class="btn btn-default" title="删除"><i class="fa fa-trash-o"></i> 删除</button></td>
+										<td>
+											<input name='image[]' class="preview" type="file">
+											<button type="button" class="btn btn-default" title="删除"><i class="fa fa-trash-o"></i> 删除</button>
+										</td>
 									</tr>
 								</tbody>
 							</table>
@@ -165,176 +182,32 @@
 					<!--扩展属性-->
 					<div class="tab-pane" id="customAttribute">
 						<div class="row data-type">
-							<div>
-								<div class="col-md-2 title">扩展属性1</div>
-								<div class="col-md-10 data">
-									<input class="form-control" placeholder="扩展属性1">
+							<div class="btn-group">
+								<button type="button" id="add_attr" class="btn btn-default" title="新建" >
+									<i class="fa fa-file-o"></i> 新建
+								</button>
+							</div>
+							<div id="attr">
+								<div>
+								<div class="col-md-2 title">属性名:</div>
+									<div class="col-md-10 data">
+										<input name="attr[]" class="form-control" placeholder="属性名">
+									</div>
+								</div>
+								<div>
+									<div class="col-md-2 title">属性值:</div>
+									<div class="col-md-10 data">
+										<input name="attr_value[]" class="form-control" placeholder="属性值">
+									</div>
 								</div>
 							</div>
-							<div>
-								<div class="col-md-2 title">扩展属性2</div>
-								<div class="col-md-10 data">
-									<input class="form-control" placeholder="扩展属性2">
-								</div>
-							</div>
+							
 						</div>
 					</div>
-
-					<!--规格-->
-					<div class="tab-pane" id="spec">
-						<div class="row data-type">
-							<div class="col-md-2 title">是否启用规格</div>
-							<div class="col-md-10 data">
-								<input type="checkbox">
-							</div>
-						</div>
-						<p>
-
-							<div>
-
-								<div class="row data-type">
-
-									<div>
-										<div class="col-md-2 title">屏幕尺寸</div>
-										<div class="col-md-10 data">
-
-											<span>
-												<input type="checkbox">4.0
-											</span>
-											<span>
-												<input type="checkbox">4.5
-											</span>
-											<span>
-												<input type="checkbox">5.0
-											</span>
-
-										</div>
-									</div>
-									<div>
-										<div class="col-md-2 title">网络制式</div>
-										<div class="col-md-10 data">
-
-											<span>
-												<input type="checkbox">2G
-											</span>
-											<span>
-												<input type="checkbox">3G
-											</span>
-											<span>
-												<input type="checkbox">4G
-											</span>
-
-										</div>
-									</div>
-
-								</div>
-
-
-								<div class="row data-type">
-									<table class="table table-bordered table-striped table-hover dataTable">
-										<thead>
-											<tr>
-												<th class="sorting">屏幕尺寸</th>
-												<th class="sorting">网络制式</th>
-												<th class="sorting">价格</th>
-												<th class="sorting">库存</th>
-												<th class="sorting">是否启用</th>
-												<th class="sorting">是否默认</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<td>
-													4.0
-												</td>
-												<td>
-													3G
-												</td>
-												<td>
-													<input class="form-control" placeholder="价格">
-												</td>
-												<td>
-													<input class="form-control" placeholder="库存数量">
-												</td>
-												<td>
-													<input type="checkbox">
-												</td>
-												<td>
-													<input type="checkbox">
-												</td>
-											</tr>
-											<tr>
-												<td>
-													4.0
-												</td>
-												<td>
-													4G
-												</td>
-												<td>
-													<input class="form-control" placeholder="价格">
-												</td>
-												<td>
-													<input class="form-control" placeholder="库存数量">
-												</td>
-												<td>
-													<input type="checkbox">
-												</td>
-												<td>
-													<input type="checkbox">
-												</td>
-											</tr>
-											<tr>
-												<td>
-													5.0
-												</td>
-												<td>
-													3G
-												</td>
-												<td>
-													<input class="form-control" placeholder="价格">
-												</td>
-												<td>
-													<input class="form-control" placeholder="库存数量">
-												</td>
-												<td>
-													<input type="checkbox">
-												</td>
-												<td>
-													<input type="checkbox">
-												</td>
-											</tr>
-											<tr>
-												<td>
-													5.0
-												</td>
-												<td>
-													4G
-												</td>
-												<td>
-													<input class="form-control" placeholder="价格">
-												</td>
-												<td>
-													<input class="form-control" placeholder="库存数量">
-												</td>
-												<td>
-													<input type="checkbox">
-												</td>
-												<td>
-													<input type="checkbox">
-												</td>
-											</tr>
-
-										</tbody>
-									</table>
-
-								</div>
-
-							</div>
-					</div>
-
 				</div>
 				<!--tab内容/-->
 				<!--表单内容/-->
+				
 
 			</div>
 
@@ -343,56 +216,12 @@
 
 		</div>
 		<div class="btn-toolbar list-toolbar">
-			<button class="btn btn-primary"><i class="fa fa-save"></i>保存</button>
+			<button type="submit" class="btn btn-primary"><i class="fa fa-save"></i>保存</button>
 			<button class="btn btn-default">返回列表</button>
 		</div>
-
+	</form>
 	</section>
 
-
-	<!-- 上传窗口 -->
-	<div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-					<h3 id="myModalLabel">上传商品图片</h3>
-				</div>
-				<div class="modal-body">
-
-					<table class="table table-bordered table-striped">
-						<tr>
-							<td>颜色</td>
-							<td><input class="form-control" placeholder="颜色"> </td>
-						</tr>
-						<tr>
-							<td>商品图片</td>
-							<td>
-								<table>
-									<tr>
-										<td>
-											<input type="file" id="file" />
-											<button class="btn btn-primary" type="button">
-												上传
-											</button>
-										</td>
-										<td>
-											<img src="" width="200px" height="200px">
-										</td>
-									</tr>
-								</table>
-							</td>
-						</tr>
-					</table>
-
-				</div>
-				<div class="modal-footer">
-					<button class="btn btn-success" data-dismiss="modal" aria-hidden="true">保存</button>
-					<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</button>
-				</div>
-			</div>
-		</div>
-	</div>
 
 
 	<!-- 正文区域 /-->
@@ -406,7 +235,134 @@
 		});
 
 	</script>
-
 </body>
-
 </html>
+<script>
+	$(".logo").change(function(){
+		var file = this.files[0]
+		var url = getObjectUrl(file)
+		var str = "<img width='120' height='auto' src='"+url+"' alt=''>"
+		$('.v_logo').html(str)
+	})
+
+	// 把图片转成一个字符串
+	function getObjectUrl(file) {
+		var url = null;
+		if (window.createObjectURL != undefined) {
+			url = window.createObjectURL(file)
+		} else if (window.URL != undefined) {
+			url = window.URL.createObjectURL(file)
+		} else if (window.webkitURL != undefined) {
+			url = window.webkitURL.createObjectURL(file)
+		}
+		return url
+	}
+
+	$(".preview").change(function(){
+		// 获取选择的图片
+		var file = this.files[0]
+		// 生成图片路径
+		var url = getObjectUrl(file)
+
+		var str = "<img width='120' height='auto' src='"+url+"' alt=''>"
+		$(this).parent().prev(".img_preview").html(str)
+		
+	})
+
+	// 添加图片
+	var imgStr = ` <tr>
+					<td class="img_preview">
+						<img alt="" src="" width="100px" height="100px">
+					</td>
+					<td>
+						<input name='image[]' class="preview" type="file" name="" id="">
+						<button type="button" class="btn btn-default" title="删除"><i class="fa fa-trash-o"></i> 删除</button>
+					</td>
+				</tr>`;
+
+	$('#add_img').click(function(){
+		$(".imgs").append(imgStr)
+		$(".preview").change(function(){
+			// 获取选择的图片
+			var file = this.files[0]
+			// 生成图片路径
+			var url = getObjectUrl(file)
+
+			var str = "<img width='120' height='auto' src='"+url+"' alt=''>"
+			$(this).parent().prev(".img_preview").html(str)
+			
+		})
+	})
+
+	// 添加属性
+	var attrStr = `<br><br><br><br><br><br>                                                                                                                                                     <div>
+									<div class="col-md-2 title">属性名:</div>
+									<div class="col-md-10 data">
+										<input name="attr[]" class="form-control" placeholder="属性名">
+									</div>
+								</div>
+								<div>
+									<div class="col-md-2 title">属性值:</div>
+									<div class="col-md-10 data">
+										<input name="attr_value[]" class="form-control" placeholder="属性值">
+									</div>
+								</div>`
+	$("#add_attr").click(function(){
+		$("#attr").append(attrStr)
+	})
+	
+	// 添加SKU
+	var skuStr = `  <tr>
+						<td>
+							<input name='sku_name[]' class="form-control" placeholder="SKU名称">
+						</td>
+						<td>
+							<input name='price[]' class="form-control" placeholder="价格">
+						</td>
+						<td>
+							<input name='stock[]' class="form-control" placeholder="库存数量">
+						</td>
+					</tr>`
+	$("#add_sku").click(function(){
+		$(".sku").append(skuStr)
+	})
+
+	$(".cat_1").change(function(){
+		console.log($(this).val())
+		var id = $(this).val()
+		$.ajax({
+			type:"GET",
+			url:"{{Route('getParent')}}",
+			data:{id:id},
+			dataType:'json',
+			success:function(data){
+				var str = '';
+				for(var i=0;i<data.length;i++)
+				{
+					str += "<option value='"+data[i]['id']+"'>"+data[i]['cat_name']+"</option>"
+				}
+				$(".cat_2").html(str)
+				$(".cat_2").trigger('change')
+			}
+		})
+	})
+
+	$(".cat_2").change(function(){
+		console.log($(this).val())
+		var id = $(this).val()
+		$.ajax({
+			type:"GET",
+			url:"{{Route('getParent')}}",
+			data:{id:id},
+			dataType:'json',
+			success:function(data){
+				var str = '';
+				for(var i=0;i<data.length;i++)
+				{
+					str += "<option value='"+data[i]['id']+"'>"+data[i]['cat_name']+"</option>"
+				}
+				$(".cat_3").html(str)
+			}
+		})
+	})
+</script>

@@ -21,7 +21,7 @@ class TestController extends Controller
 
     public function get()
     {
-        dd(env('DB_DATABASE'));
+        dd(base_path('../'));
         $redis = new \Predis\Client(['scheme' => 'tcp','host'=> '127.0.0.1','port'=> 6379]);
         $key = "seller:123";
         $data = $redis->get($key);

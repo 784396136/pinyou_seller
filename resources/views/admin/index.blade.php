@@ -46,7 +46,7 @@
                 <!-- mini logo for sidebar mini 50x50 pixels -->
                 <span class="logo-mini"><b>品优购</b></span>
                 <!-- logo for regular state and mobile devices -->
-                <span class="logo-lg"><b>品优购</b>商家后台</span>
+                <span class="logo-lg"><b>品优购{{session('admin_id')}}</b>商家后台</span>
             </a>
             <!-- Header Navbar: style can be found in header.less -->
             <nav class="navbar navbar-static-top">
@@ -306,7 +306,7 @@
                         <img src="/img/user2-160x160.jpg" class="img-circle" alt="User Image">
                     </div>
                     <div class="pull-left info">
-                        <p> chendahai</p>
+                        <p> {{session('seller_name')}}</p>
                         <a href="#"><i class="fa fa-circle text-success"></i> 在线</a>
                     </div>
                 </div>

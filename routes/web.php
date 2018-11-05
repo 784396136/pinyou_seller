@@ -14,7 +14,10 @@ Route::post('/register',"RegisterController@doregister")->name('doregister');
 Route::get('/protocol',"RegisterController@protocol")->name('protocol');   
 
 // 添加登录中间件
-// Route::middleware(['login'])->group(function(){
+Route::middleware(['login'])->group(function(){
+    // 三级联动
+    Route::get('/category/getparent',"CategoryController@getParent")->name('getParent');
+
     // 主页
     Route::get('/',"IndexController@index")->name('index');
 
@@ -27,6 +30,9 @@ Route::get('/protocol',"RegisterController@protocol")->name('protocol');
 
     // 商品管理
     Route::get('/goods/add',"GoodsController@add")->name('goodsAdd'); // 新增商品
+    Route::post('/goods/add',"GoodsController@doadd")->name('goodsDoAdd'); // 新增商品
     Route::get('/goods/goods',"GoodsController@goods")->name('goods'); // 商品管理
-// });
+    Route::get('/goods/sku/{id}',"GoodsController@sku")->name('goodsSku'); // 添加SKU
+    Route::post('/goods/sku/{id}',"GoodsController@dosku")->name('goodsDoSku'); // 添加SKU
+});
 
