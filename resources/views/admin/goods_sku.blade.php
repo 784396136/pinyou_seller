@@ -45,7 +45,7 @@
 
 	<!-- 正文区域 -->
 	<section class="content">
-
+		<form action="{{Route('goodsDoSku',['id'=>$id])}}" method="post" enctype="multipart/form-data">
 		<div class="box-body">
 
 			<!--tab页-->
@@ -75,7 +75,6 @@
 						@endforeach
 					</tbody>
 				<!--tab头/-->
-				<form action="{{Route('goodsDoSku',['id'=>$id])}}" method="post" enctype="multipart/form-data">
 					@csrf
 					<!--tab内容-->
 					<div class="tab-content">
@@ -124,6 +123,34 @@
 						@endforeach
 					</div>
 					@endforeach
+					<div class="row data-type">
+							<!-- 颜色图片 -->
+							<div class="btn-group">
+								<button type="button" id="add_img" class="btn btn-default" title="新建" >
+									<i class="fa fa-file-o"></i> 新建
+								</button>
+							</div>
+
+							<table class="table table-bordered table-striped table-hover dataTable">
+								<thead>
+									<tr>
+										<th class="sorting">图片</th>
+										<th class="sorting">操作</th>
+								</thead>
+								<tbody class="imgs">
+									<tr>
+										<td class="img_preview">
+											<img alt="" src="" width="100px" height="100px">
+										</td>
+										<td>
+											<input name='image[]' class="preview" type="file">
+											<button type="button" class="btn btn-default" title="删除"><i class="fa fa-trash-o"></i> 删除</button>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+
+						</div>
 			</div>
 
 
@@ -153,3 +180,52 @@
 </body>
 
 </html>
+<script>
+	// 把图片转成一个字符串
+	function getObjectUrl(file) {
+		var url = null;
+		if (window.createObjectURL != undefined) {
+			url = window.createObjectURL(file)
+		} else if (window.URL != undefined) {
+			url = window.URL.createObjectURL(file)
+		} else if (window.webkitURL != undefined) {
+			url = window.webkitURL.createObjectURL(file)
+		}
+		return url
+	}
+
+	$(".preview").change(function(){
+		// 获取选择的图片
+		var file = this.files[0]
+		// 生成图片路径
+		var url = getObjectUrl(file)
+
+		var str = "<img width='120' height='auto' src='"+url+"' alt=''>"
+		$(this).parent().prev(".img_preview").html(str)
+		
+	})
+// 添加图片
+var imgStr = ` <tr>
+					<td class="img_preview">
+						<img alt="" src="" width="100px" height="100px">
+					</td>
+					<td>
+						<input name='image[]' class="preview" type="file" name="" id="">
+						<button type="button" class="btn btn-default" title="删除"><i class="fa fa-trash-o"></i> 删除</button>
+					</td>
+				</tr>`;
+
+	$('#add_img').click(function(){
+		$(".imgs").append(imgStr)
+		$(".preview").change(function(){
+			// 获取选择的图片
+			var file = this.files[0]
+			// 生成图片路径
+			var url = getObjectUrl(file)
+
+			var str = "<img width='120' height='auto' src='"+url+"' alt=''>"
+			$(this).parent().prev(".img_preview").html(str)
+			
+		})
+	})
+</script>

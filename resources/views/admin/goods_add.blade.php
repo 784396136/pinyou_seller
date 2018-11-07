@@ -166,7 +166,7 @@
 									<tr>
 										<td class="img_preview">
 											<img alt="" src="" width="100px" height="100px">
-										</td>
+										</td> 
 										<td>
 											<input name='image[]' class="preview" type="file">
 											<button type="button" class="btn btn-default" title="删除"><i class="fa fa-trash-o"></i> 删除</button>

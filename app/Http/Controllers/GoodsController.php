@@ -39,11 +39,11 @@ class GoodsController extends Controller
 
     public function dosku(Request $req,$id)
     {
+        
         $g_sku = new G_sku;
         $data = $req->all();
         $attr = $data;
-        
-        unset($attr['_token'],$attr['sku_name'],$attr['price'],$attr['stock']);
+        unset($attr['_token'],$attr['sku_name'],$attr['price'],$attr['stock'],$attr['image']);
         $num = count($attr)/2;
         $res = '';
         for($i=0;$i<$num;$i++)

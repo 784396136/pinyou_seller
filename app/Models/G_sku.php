@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use App\Models\S_img;
+use Image;
+
 
 class G_sku extends Model
 {
@@ -41,8 +44,67 @@ class G_sku extends Model
     // 添加
     public function addSku($data)
     {
+        
         $model = new self;
         $model -> fill($data);
-        return $model -> save();
+        $model -> save();
+        // 获取新插入ID
+        $sku_id = DB::getPdo()->lastInsertId();
+        foreach($data['image'] as $v)
+        {
+            if($v->isValid())
+            {
+                $s_img = new S_img;
+                $admin_path = base_path('../laravel-admin/public/uploads/sku_img/'.date("Ymd"));
+                $img= [];
+                $img['path'] = '/uploads/'.$v->store('/sku_img/'.date("Ymd"));
+                // 获取上传图片路径
+                $old_path = $v->path();
+                $t_path = public_path('/uploads/sku_img/'.date("Ymd").'/thumbnails');
+                // 创建缩略图图片路径
+                if(!is_dir($t_path))
+                {
+                    mkdir($t_path.'/800/',0777,true);
+                    mkdir($t_path.'/400/',0777,true);
+                    mkdir($t_path.'/56/',0777,true);
+                }
+                if(!is_dir($admin_path))
+                {
+                    mkdir($admin_path,0777,true);
+                    mkdir($admin_path.'/thumbnails/800/',0777,true);
+                    mkdir($admin_path.'/thumbnails/400/',0777,true);
+                    mkdir($admin_path.'/thumbnails/56/',0777,true);
+                }
+                // 获取上传图片名称
+                $name = substr(strrchr($img['path'],'/'),1);
+                // 拼出不同大小的图片名
+                $sm_name = 'sm_'.$name;
+                $md_name = 'md_'.$name;
+                $bg_name = 'bg_'.$name;
+
+                // 处理图片
+                $image = Image::make($old_path);
+                $image->save($admin_path.'/'.$name);
+                // 生成缩略图
+                // 大图
+                $image->resize(800,800);
+                $image->save($t_path.'/800/'.$bg_name);
+                $image->save($admin_path.'/thumbnails/800/'.$bg_name);
+                $img['bg_path'] = '/uploads/sku_img/'.date('Ymd').'/'.$bg_name;
+                // 中图
+                $image->resize(400,400);
+                $image->save($t_path.'/400/'.$md_name);
+                $image->save($admin_path.'/thumbnails/400/'.$md_name);
+                $img['md_path'] = '/uploads/sku_img/'.date('Ymd').'/'.$md_name;
+                // 小图
+                $image->resize(56,56);
+                $image->save($t_path.'/56/'.$sm_name);
+                $image->save($admin_path.'/thumbnails/56/'.$sm_name);
+                $img['sm_path'] = '/uploads/sku_img/'.date('Ymd').'/'.$sm_name;
+                $img['sku_id'] = $sku_id;
+                $s_img -> fill($img);
+                $s_img -> save();
+            }
+        }
     }
 }
