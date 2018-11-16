@@ -113,7 +113,7 @@
 					</div>
 					<!--tab内容/-->
 					<!--表单内容/-->
-					@foreach ($data as $k=>$v)
+					@foreach ($data as $k=>$v) 
 					<div class="name">
 						<input type="checkbox" name="attr_name{{$k}}" value="{{$v->n_id}}">{{$v->attr_name}}
 					</div>

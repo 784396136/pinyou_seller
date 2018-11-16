@@ -46,7 +46,7 @@ class GoodsController extends Controller
         unset($attr['_token'],$attr['sku_name'],$attr['price'],$attr['stock'],$attr['image']);
         $num = count($attr)/2;
         $res = '';
-        for($i=0;$i<$num;$i++)
+        for($i=0;$i<$num;$i++) 
         {
             unset($data['attr_name'.$i],$data['attr_value'.$i]);
             if($i==0)
@@ -60,10 +60,8 @@ class GoodsController extends Controller
         }
         $data['attr'] = $res;
         $data['goods_id'] = $id;
-        if($g_sku -> addSku($data))
-        {
-            return redirect()->route('goods');
-        }
+        $g_sku -> addSku($data);
+        return redirect()->route('goods');
     }
 
     public function doadd(Request $req)

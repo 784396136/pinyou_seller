@@ -24,6 +24,7 @@ class G_sku extends Model
                 ->select('an.id as n_id','an.attr_name',DB::raw("GROUP_CONCAT(you_av.id) as id_list"),DB::raw("GROUP_CONCAT(you_av.attr_value) as value_list"))
                 ->leftJoin('goods_attr_value as av','an.id','av.name_id')
                 ->where('an.goods_id',$id)
+                ->orderBy('n_id')
                 ->groupBy('an.attr_name')
                 ->get();
         foreach($data as $v)
@@ -90,17 +91,17 @@ class G_sku extends Model
                 $image->resize(800,800);
                 $image->save($t_path.'/800/'.$bg_name);
                 $image->save($admin_path.'/thumbnails/800/'.$bg_name);
-                $img['bg_path'] = '/uploads/sku_img/'.date('Ymd').'/'.$bg_name;
+                $img['bg_path'] = '/uploads/sku_img/'.date('Ymd').'/thumbnails/800/'.$bg_name;
                 // 中图
                 $image->resize(400,400);
                 $image->save($t_path.'/400/'.$md_name);
                 $image->save($admin_path.'/thumbnails/400/'.$md_name);
-                $img['md_path'] = '/uploads/sku_img/'.date('Ymd').'/'.$md_name;
+                $img['md_path'] = '/uploads/sku_img/'.date('Ymd').'/thumbnails/400/'.$md_name;
                 // 小图
                 $image->resize(56,56);
                 $image->save($t_path.'/56/'.$sm_name);
                 $image->save($admin_path.'/thumbnails/56/'.$sm_name);
-                $img['sm_path'] = '/uploads/sku_img/'.date('Ymd').'/'.$sm_name;
+                $img['sm_path'] = '/uploads/sku_img/'.date('Ymd').'/thumbnails/56/'.$sm_name;
                 $img['sku_id'] = $sku_id;
                 $s_img -> fill($img);
                 $s_img -> save();
